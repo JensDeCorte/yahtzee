@@ -79,14 +79,24 @@ function evaluateScore( ) {
 	// Set total score to 0
 	var score = 0;
 
+	var scoreArray = [];
+
 	// Loop over all dices in the yahtzeeModel
 	yahtzeeModel.dices.forEach( function( value ) {
 
 		// When a new dice is created, it hasn't got a value yet
 		// Check if the dice has a value, if so add value to the score
-		if ( typeof value.publish() !== 'undefined' ) {
+	
+	//	for(var i=0; i<dices.length; i++)
+	//	{
+			if ( typeof value.publish() !== 'undefined' ) 
+			{
 			score += value.publish();
-		}
+			}
+
+	//		scoreArray.push(value);  //zet de score van elke dobbelsteen in een array
+	//	}
+
 	})
 
 	// Publish the score
@@ -113,11 +123,16 @@ $('.dice').each( function(){
 	// Add event listener to button in dice
 	$( this ).find('button').on('click', function() {
 
-		// Generate number between 1-6
-		var randomNumber = Math.floor( Math.random() * 6  ) + 1
+		for(var i=0; i<yahtzeeModel.dices.length; i++)
+		{
+			// Generate number between 1-6
+			var randomNumber = Math.floor( Math.random() * 6  ) + 1
 
-		// Update dice value
-		currentDice.publish( randomNumber );
+			// Update dice value
+			//currentDice.publish( randomNumber );
+			yahtzeeModel.dices[i].publish(randomNumber);
+		}
+
 		
 	});
 })
@@ -140,3 +155,4 @@ function createNewDice( container ) {
 	// Return observable
 	return dice;
 }
+
