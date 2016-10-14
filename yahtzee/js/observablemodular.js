@@ -1,4 +1,4 @@
-// https://www.joezimjs.com/javascript/javascript-design-patterns-observer/
+
 
 function Observable() {
 	
@@ -11,6 +11,22 @@ function Observable() {
 
     // Public methods
 	_self.methods = {
+
+		// Used to set and retrieve current value
+	    publish: function( data ) {
+
+	    	if (typeof data !== 'undefined') {
+
+		    	_self.data = data;
+		        // Iterate over the subscribers array and call each of
+		        // the callback functions.
+		        for (var subscriberKey = 0; subscriberKey < _self.subscribers.length; ++subscriberKey) {
+		            _self.subscribers[ subscriberKey ](data);
+		        }
+	    	} else {
+	    		return _self.data
+	    	}
+	    },
 
 		// Triggered when data is set (using publish method)
 	    subscribe: function(callback) {
@@ -35,33 +51,22 @@ function Observable() {
 	                return;
 	            }
 	        }
-	    },
-
-	    // Used to set and retrieve current value
-	    publish: function( data ) {
-
-	    	if (typeof data !== 'undefined') {
-
-		    	_self.data = data;
-		        // Iterate over the subscribers array and call each of
-		        // the callback functions.
-		        for (var subscriberKey = 0; subscriberKey < _self.subscribers.length; ++subscriberKey) {
-		            _self.subscribers[ subscriberKey ](data);
-		        }
-	    	} else {
-	    		return _self.data
-	    	}
 	    }
+
 	}
 
 	return _self.methods
 };
+
+
 
 // Create an object that will contain all the data for the yahtzee project
 var yahtzeeModel = {
 	'score'	: 	new Observable(),
 	'dices'	:	[]
 }
+
+
 
 // Score functionality
 // Score subscriptions, get executed when score changes
@@ -72,6 +77,7 @@ yahtzeeModel.score.subscribe(function updateScore() {
 
 })
 
+
 // Function that calculates entire score
 // Executed when dice value changes
 function evaluateScore( ) {
@@ -79,14 +85,24 @@ function evaluateScore( ) {
 	// Set total score to 0
 	var score = 0;
 
+	var scoreArray = [];
+
 	// Loop over all dices in the yahtzeeModel
 	yahtzeeModel.dices.forEach( function( value ) {
 
 		// When a new dice is created, it hasn't got a value yet
 		// Check if the dice has a value, if so add value to the score
-		if ( typeof value.publish() !== 'undefined' ) {
+	
+	//	for(var i=0; i<dices.length; i++)
+	//	{
+			if ( typeof value.publish() !== 'undefined' ) 
+			{
 			score += value.publish();
-		}
+			}
+
+	//		scoreArray.push(value);  //zet de score van elke dobbelsteen in een array
+	//	}
+
 	})
 
 	// Publish the score
@@ -104,22 +120,38 @@ $('.dice').each( function(){
 	// Add dice to model
 	yahtzeeModel.dices.push( newDice );
 
+/*
 	// Get key of lastly added dice
 	var lastlyAddedDiceKey = yahtzeeModel.dices.length - 1
 	
 	// Retrieve lastly added key from model
 	var currentDice = yahtzeeModel.dices[ lastlyAddedDiceKey ];
+*/
 
 	// Add event listener to button in dice
-	$( this ).find('button').on('click', function() {
+		$(".dice-functionality").on('click', function() {
 
-		// Generate number between 1-6
-		var randomNumber = Math.floor( Math.random() * 6  ) + 1
+		for(var i=0; i<yahtzeeModel.dices.length; i++)
+		{
+			// Generate number between 1-6
+			var randomNumber = Math.floor( Math.random() * 6  ) + 1
 
-		// Update dice value
-		currentDice.publish( randomNumber );
+			// Update dice value
+			//currentDice.publish( randomNumber );
+			yahtzeeModel.dices[i].publish(randomNumber);
+		}
 		
 	});
+
+	//------------
+
+	/*$(this).find('button').on('click', function()
+	{
+
+	}
+	)*/
+
+
 })
 
 // Functionality used to make creation of die easier
@@ -140,3 +172,15 @@ function createNewDice( container ) {
 	// Return observable
 	return dice;
 }
+
+/*
+function lockDice()
+{
+	$(".unlocked").on('click', function(
+
+			$(".lockbutton").removeClass(".unlocked");
+
+		));
+
+}
+*/
