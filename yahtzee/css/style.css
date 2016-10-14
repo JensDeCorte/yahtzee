@@ -19,10 +19,13 @@ body {
     text-align:center;
 }
 
-.dice-functionality {
+.dice-functionality, .lockbutton {
     position: absolute;
-    bottom: 0;
+    /** bottom: 0; **/
     left: 0; right: 0;
     text-align: center;
     padding:12px;
 }
+
+.dice-functionality { left: 50px; bottom: 400px; }
+.lockbutton { bottom: 0; }
