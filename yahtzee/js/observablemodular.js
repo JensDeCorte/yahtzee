@@ -2,8 +2,7 @@
 
 function Observable() {
 	
-	// Create reference to this by renaming this, so you can still use this inside functions
-	var _self = this;
+	var _self = this;	// Create reference to this by renaming this, so you can still use this inside functions
 
 	// members that will collect necessary data
 	_self.data;
@@ -67,14 +66,11 @@ var yahtzeeModel = {
 }
 
 
-
 // Score functionality
 // Score subscriptions, get executed when score changes
 yahtzeeModel.score.subscribe(function updateScore() {
-
 	// Add newly published score to HTML
-    $('.score-value').html( yahtzeeModel.score.publish() ); 
-
+    $('.score-value').html( yahtzeeModel.score.publish() );
 })
 
 
@@ -110,6 +106,7 @@ function evaluateScore( ) {
 }
 
 
+
 // Dice functionality
 // Loop over all dices found in HTML
 $('.dice').each( function(){
@@ -117,21 +114,31 @@ $('.dice').each( function(){
 	// Create new Dice observable
 	var newDice = createNewDice( $( this ) );
 
+	//var unlocked = true;
+
+	newDice.diceElement = $( this );
+
+	newDice.lockContainer = $( this ).find('.lockbutton');
+
+	newDice.lockContainer.find('button').on( 'click', function() {
+		
+		newDice.diceElement.toggleClass('disabled');
+		newDice.diceIsUnlocked = !newDice.diceIsUnlocked;
+		console.log( newDice.publish() );
+	})
+
 	// Add dice to model
 	yahtzeeModel.dices.push( newDice );
 
-/*
-	// Get key of lastly added dice
-	var lastlyAddedDiceKey = yahtzeeModel.dices.length - 1
-	
-	// Retrieve lastly added key from model
-	var currentDice = yahtzeeModel.dices[ lastlyAddedDiceKey ];
-*/
+});
 
-	// Add event listener to button in dice
-		$(".dice-functionality").on('click', function() {
 
-		for(var i=0; i<yahtzeeModel.dices.length; i++)
+// Add event listener to button in dice
+$(".dice-functionality").on('click', function() {
+		
+	for(var i=0; i<yahtzeeModel.dices.length; i++)
+	{
+		if(yahtzeeModel.dices[i].diceIsUnlocked)
 		{
 			// Generate number between 1-6
 			var randomNumber = Math.floor( Math.random() * 6  ) + 1
@@ -140,19 +147,10 @@ $('.dice').each( function(){
 			//currentDice.publish( randomNumber );
 			yahtzeeModel.dices[i].publish(randomNumber);
 		}
-		
-	});
-
-	//------------
-
-	/*$(this).find('button').on('click', function()
-	{
-
 	}
-	)*/
+		
+});
 
-
-})
 
 // Functionality used to make creation of die easier
 // @container jQuery object
@@ -161,26 +159,16 @@ function createNewDice( container ) {
 	// Create new observable
 	var dice = new Observable();
 
+	dice.diceIsUnlocked = true;
+
 	// Add subscription to observable
 	dice.subscribe(function( data ){
 		// Recalculate score when dice is cast
 		dice.subscribe( evaluateScore );
-		// Update dice HTM value
+		// Update dice HTML value
 		container.find( '.dice-value' ).html( data )
 	});
 
 	// Return observable
 	return dice;
 }
-
-/*
-function lockDice()
-{
-	$(".unlocked").on('click', function(
-
-			$(".lockbutton").removeClass(".unlocked");
-
-		));
-
-}
-*/

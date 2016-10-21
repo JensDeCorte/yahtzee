@@ -27,5 +27,11 @@ body {
     padding:12px;
 }
 
-.dice-functionality { left: 50px; bottom: 400px; }
+.dice-functionality { left: 50px; top: 150px; }
+
 .lockbutton { bottom: 0; }
+
+
+.disabled{
+    background-color: red;
+}
