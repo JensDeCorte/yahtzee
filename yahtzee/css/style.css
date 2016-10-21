@@ -1,3 +1,4 @@
+
 body {
     font-family:sans-serif;
 }
@@ -19,7 +20,7 @@ body {
     text-align:center;
 }
 
-.dice-functionality, .lockbutton {
+.lockbutton {
     position: absolute;
     /** bottom: 0; **/
     left: 0; right: 0;
@@ -34,4 +35,15 @@ body {
 
 .disabled{
     background-color: red;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: solid black 2px;
+    height: 10px;
+    padding: 4px;
+    height: 15px;
 }

@@ -114,8 +114,6 @@ $('.dice').each( function(){
 	// Create new Dice observable
 	var newDice = createNewDice( $( this ) );
 
-	//var unlocked = true;
-
 	newDice.diceElement = $( this );
 
 	newDice.lockContainer = $( this ).find('.lockbutton');
@@ -124,7 +122,7 @@ $('.dice').each( function(){
 		
 		newDice.diceElement.toggleClass('disabled');
 		newDice.diceIsUnlocked = !newDice.diceIsUnlocked;
-		console.log( newDice.publish() );
+		console.log( newDice.publish() );		//console.log mag eventueel weg
 	})
 
 	// Add dice to model
