@@ -19,10 +19,30 @@ body {
     text-align:center;
 }
 
-.dice-functionality {
+.lockbutton {
     position: absolute;
-    bottom: 0;
+    /** bottom: 0; **/
     left: 0; right: 0;
     text-align: center;
     padding:12px;
+}
+
+.dice-functionality { left: 50px; top: 150px; }
+
+.lockbutton { bottom: 0; }
+
+
+.disabled{
+    background-color: red;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: solid black 2px;
+    height: 10px;
+    padding: 4px;
+    height: 15px;
 }
