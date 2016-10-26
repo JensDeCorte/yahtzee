@@ -92,10 +92,13 @@ $('.dice').each( function(){
 	yahtzeeModel.dices.push( newDice );
 });
 
+var rolls = 0;
 
 // Add event listener to button in dice
 $(".dice-functionality").on('click', function() {
-	
+    
+    rolls++;
+    
 	for(var i=0; i<yahtzeeModel.dices.length; i++)
 	{
 		if(yahtzeeModel.dices[i].diceIsUnlocked)
@@ -108,22 +111,78 @@ $(".dice-functionality").on('click', function() {
 			yahtzeeModel.dices[i].publish(randomNumber);
 		}
 	}
+    
+//-------------------------JORDY------------------------------------//
+
+    
+    if (rolls >= 3)
+    {
+        document.getElementById("throwBtn").disabled = true;
+    }
+    
+    console.log("Dit was beurt: " + rolls);
 		
 });
-
-//-------------------------------------------------------------//
 
 var numbers = [];
 
 $('.lockbutton').on('click', function()
 {
-    //Disabled niet ?
-    $(this).prop('disabled', true);
     var currentLock = $(this).attr('id').slice(-1);
     var currentSpan = document.getElementById('val' + currentLock).innerHTML;
+    document.getElementById('lock' + currentLock).disabled = true;
     numbers.push(currentSpan);
+    numbers.sort();
     console.log(numbers);
+    
+    checkScores();
 })
+
+$('check').on('click', function()
+{
+    //Print score op de bijhorende span
+    unlockTrow();
+})
+
+function unlockTrow()
+{
+    rolls = 0;
+    document.getElementById("throwBtn").disabled = false;
+    //dice unlockken en values op 0 zetten
+}
+
+//SCORES
+function checkScores()
+{
+    var ones    = numbers.indexOf("1");
+    var twos    = numbers.indexOf("2");
+    var threes  = numbers.indexOf("3");
+    var fours   = numbers.indexOf("4");
+    var fives   = numbers.indexOf("5");
+    var sixes   = numbers.indexOf("6");
+    var threeOfKind = "";
+    var fourOfKind = "";
+    var fullHouse = "";
+    var smallStraight = ""; //1,2,3,4 or 2,3,4,5 or 3,4,5,6
+    var largeStraight = ""; // 1,2,3,4,5 or 2,3,4,5,6
+    var chance = ""; //Random stuff
+    var yahtzee =""; //Five of a kind
+}
+
+function checkForHowMany(array, what) 
+{
+    var count = 0;
+    for (var i = 0; i < numbers.length; i++) 
+    {
+        if (array[i] === what) 
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
+//--------------------------------------------------------------//
 
 // Functionality used to make creation of die easier
 // @container jQuery object
