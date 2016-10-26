@@ -1,6 +1,6 @@
 function Observable() {
 	
-	var _self = this;	// Create reference to this by renaming this, so you can still use this inside functions
+	var _self = this;
 
 	// members that will collect necessary data
 	_self.data;
@@ -9,14 +9,11 @@ function Observable() {
     // Public methods
 	_self.methods = {
 
-		// Used to set and retrieve current value
 	    publish: function( data ) {
 
 	    	if (typeof data !== 'undefined') {
 
 		    	_self.data = data;
-		        // Iterate over the subscribers array and call each of
-		        // the callback functions.
 		        for (var subscriberKey = 0; subscriberKey < _self.subscribers.length; ++subscriberKey) {
 		            _self.subscribers[ subscriberKey ](data);
 		        }
@@ -25,13 +22,7 @@ function Observable() {
 	    	}
 	    },
 
-		// Triggered when data is set (using publish method)
 	    subscribe: function(callback) {
-	        // In most situations, you would check to see if the
-	        // callback already exists within the subscribers array,
-	        // but for the sake of keeping us on track and because
-	        // this isn't necessarily included, we'll leave it out.
-	        // Just add the callback to the subscribers list
 	        _self.subscribers.push(callback);
 	    },
 
@@ -66,11 +57,10 @@ var yahtzeeModel = {
 
 // Score functionality
 // Score subscriptions, get executed when score changes
-yahtzeeModel.score.subscribe(function updateScore() {
-	// Add newly published score to HTML
-    $('.score-value').html( yahtzeeModel.score.publish() );
-})
-
+//yahtzeeModel.score.subscribe(function updateScore() {
+//	// Add newly published score to HTML
+//    $('.score-value').html( yahtzeeModel.score.publish() );
+//})
 
 function evaluateScore( score ) 
 {
@@ -121,6 +111,19 @@ $(".dice-functionality").on('click', function() {
 		
 });
 
+//-------------------------------------------------------------//
+
+var numbers = [];
+
+$('.lockbutton').on('click', function()
+{
+    //Disabled niet ?
+    $(this).prop('disabled', true);
+    var currentLock = $(this).attr('id').slice(-1);
+    var currentSpan = document.getElementById('val' + currentLock).innerHTML;
+    numbers.push(currentSpan);
+    console.log(numbers);
+})
 
 // Functionality used to make creation of die easier
 // @container jQuery object
