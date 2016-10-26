@@ -72,37 +72,10 @@ yahtzeeModel.score.subscribe(function updateScore() {
 })
 
 
-// Function that calculates entire score
-// Executed when dice value changes
-function evaluateScore( ) {
-
-	// Set total score to 0
-	var score = 0;
-
-	var scoreArray = [];
-
-	// Loop over all dices in the yahtzeeModel
-	yahtzeeModel.dices.forEach( function( value ) {
-
-		// When a new dice is created, it hasn't got a value yet
-		// Check if the dice has a value, if so add value to the score
-	
-	//	for(var i=0; i<dices.length; i++)
-	//	{
-			if ( typeof value.publish() !== 'undefined' ) 
-			{
-			score += value.publish();
-			}
-
-	//		scoreArray.push(value);  //zet de score van elke dobbelsteen in een array
-	//	}
-
-	})
-
-	// Publish the score
-	yahtzeeModel.score.publish( score );
+function evaluateScore( score ) 
+{
+    console.log(score);
 }
-
 
 
 // Dice functionality
@@ -122,18 +95,17 @@ $('.dice').each( function(){
 		
 		newDice.diceElement.toggleClass('disabled');
 		newDice.diceIsUnlocked = !newDice.diceIsUnlocked;
-		console.log( newDice.publish() );
+		//console.log( newDice.publish());
 	})
 
 	// Add dice to model
 	yahtzeeModel.dices.push( newDice );
-
 });
 
 
 // Add event listener to button in dice
 $(".dice-functionality").on('click', function() {
-		
+	
 	for(var i=0; i<yahtzeeModel.dices.length; i++)
 	{
 		if(yahtzeeModel.dices[i].diceIsUnlocked)
@@ -162,7 +134,10 @@ function createNewDice( container ) {
 	// Add subscription to observable
 	dice.subscribe(function( data ){
 		// Recalculate score when dice is cast
-		dice.subscribe( evaluateScore );
+        if (dice.diceIsUnlocked == true)
+        {
+            dice.subscribe( evaluateScore );
+        }
 		// Update dice HTML value
 		container.find( '.dice-value' ).html( data )
 	});
