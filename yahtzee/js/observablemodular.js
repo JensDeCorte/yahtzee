@@ -46,88 +46,34 @@ function Observable() {
 	return _self.methods
 };
 
-
-
-// Create an object that will contain all the data for the yahtzee project
 var yahtzeeModel = {
 	'score'	: 	new Observable(),
 	'dices'	:	[]
 }
 
-
-// Score functionality
-// Score subscriptions, get executed when score changes
-//yahtzeeModel.score.subscribe(function updateScore() {
-//	// Add newly published score to HTML
-//    $('.score-value').html( yahtzeeModel.score.publish() );
-//})
+var rolls = 0;
+var maxrolls = 3;
+var numbers = [];
+var eersteKeerGerold = false;
 
 function evaluateScore( score ) 
 {
-    console.log(score);
+    //Niks
 }
 
-
-// Dice functionality
-// Loop over all dices found in HTML
-$('.dice').each( function(){
-
-	// Create new Dice observable
-	var newDice = createNewDice( $( this ) );
-
-	//var unlocked = true;
-
-	newDice.diceElement = $( this );
-
-	newDice.lockContainer = $( this ).find('.lockbutton');
-
-	newDice.lockContainer.find('button').on( 'click', function() {
-		
-		newDice.diceElement.toggleClass('disabled');
-		newDice.diceIsUnlocked = !newDice.diceIsUnlocked;
-		//console.log( newDice.publish());
-        
-        var currentLock = newDice.lockContainer.attr('id').slice(-1);
-    var currentSpan = document.getElementById('val' + currentLock).innerHTML;
-    //document.getElementById('lock' + currentLock).disabled = true; werkt niet
-    
-        if (!newDice.diceIsUnlocked) {
-            numbers[ 'val' + currentLock ] = currentSpan;
-        } else {
-            delete numbers[ 'val' + currentLock ];
-        }
-        
-    numbers.sort();    
-    console.log(numbers);
-	})
-
-	// Add dice to model
-	yahtzeeModel.dices.push( newDice );
-});
-
-var rolls = 0;
-var maxrolls = 3
-
-// Add event listener to button in dice
-$(".dice-functionality").on('click', function() {
-    
+$(".dice-functionality").on('click', function() 
+{
+    eersteKeerGerold = true;
     rolls++;
     
 	for(var i=0; i<yahtzeeModel.dices.length; i++)
 	{
 		if(yahtzeeModel.dices[i].diceIsUnlocked)
 		{
-			// Generate number between 1-6
 			var randomNumber = Math.floor( Math.random() * 6  ) + 1
-
-			// Update dice value
-			//currentDice.publish( randomNumber );
 			yahtzeeModel.dices[i].publish(randomNumber);
 		}
 	}
-    
-//-------------------------JORDY------------------------------------//
-
     
     if (rolls >= maxrolls)
     {
@@ -138,12 +84,43 @@ $(".dice-functionality").on('click', function() {
 		
 });
 
-var numbers = [];
+$('.dice').each( function(){
 
-$('.lockbutton').on('click', function()
-{
+	// Create new Dice observable
+	var newDice = createNewDice( $( this ) );
+
+	//var unlocked = true;
+
+	newDice.diceElement = $( this );
+
+	newDice.lockContainer = $( this ).find('.lockbutton');
     
-})
+    // Add dice to model
+	yahtzeeModel.dices.push( newDice );
+    
+        newDice.lockContainer.find('button').on( 'click', function() 
+        {
+            if(eersteKeerGerold)
+            {
+                newDice.diceElement.toggleClass('disabled');
+                newDice.diceIsUnlocked = !newDice.diceIsUnlocked;
+
+                var currentLock = newDice.lockContainer.attr('id').slice(-1);
+                var currentSpan = document.getElementById('val' + currentLock).innerHTML;
+
+                if (!newDice.diceIsUnlocked) 
+                {
+                    numbers[ 'val' + currentLock ] = currentSpan;
+                } 
+                else 
+                {
+                    delete numbers[ 'val' + currentLock ];
+                }
+                
+                //VIND DE VALUE EN VERGELIJK MET BIJVOORBEELD EEN SMALL STRAIGHT
+            }
+        })
+});
 
 $('check').on('click', function()
 {
@@ -157,8 +134,6 @@ function unlockTrow()
     document.getElementById("throwBtn").disabled = false;
     //dice unlockken en values op 0 zetten
 }
-
-//--------------------------------------------------------------//
 
 function createNewDice( container ) {
 
