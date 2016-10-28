@@ -88,8 +88,8 @@ $('.dice').each( function(){
 
 	// Create new Dice observable
 	var newDice = createNewDice( $( this ) );
-
-	//var unlocked = true;
+    var compare = [];
+    var value;
 
 	newDice.diceElement = $( this );
 
@@ -117,10 +117,34 @@ $('.dice').each( function(){
                     delete numbers[ 'val' + currentLock ];
                 }
                 
-                //VIND DE VALUE EN VERGELIJK MET BIJVOORBEELD EEN SMALL STRAIGHT
+                console.log(numbers);
+                
+                //BUG, deze houd values in de array vast, die moet net als de
+                //if statement hierboven aangepast worden dat value gedeletet wordt
+                //wanneer je weer op de lock drukt
+                for(var key in numbers) 
+                {
+                    value = numbers[key];
+                    
+                    compare.push(value); 
+                    compare.sort();  
+                }
+                
+                console.log("Compare: " + compare);
+                compareScore(compare);
             }
         })
 });
+
+function compareScore(playerInput)
+{
+    console.log("PlayerInput: " + playerInput);  
+    
+    if(playerInput.indexOf('2') > -1 )
+    {
+        console.log("YES!");
+    }
+}
 
 $('check').on('click', function()
 {

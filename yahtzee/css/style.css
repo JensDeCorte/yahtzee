@@ -104,3 +104,52 @@ table button
 {
     width: 100px;
 }
+
+h1 {
+  margin: 5vh auto;
+  font-size: 4vw;
+}
+
+#rules {
+  margin: 5vh auto;
+  width: 70vw;
+  padding: 3vh 3vw;
+  background-color: #ccc;
+  border: 0.1vw solid gray;
+  border-radius: 1vw;
+}
+
+.helpbox {
+  border-left: 0.5vw solid gray;
+  padding-left: 1vw;
+}
+
+.helpbox h2 {
+  font-size: 3vw;
+  margin: 0;
+}
+
+.helpbox h3 {
+  font-size: 2.5vw;
+  margin: 0;
+}
+
+.helpbox h3::before {
+  content: ">";
+  margin-right: 0.5vw;
+}
+
+.helpbox p, .helpbox h4 {
+  font-size: 1.25vw;
+}
+
+.helpbox h3 + p, .helpbox h4, .helpbox h4 + p  {
+  margin-left: 2vw;
+}
+
+.helpbox h4 {
+  font-weight: bold;
+  margin-top: 1vw;
+  margin-bottom: 0;
+  text-decoration: underline;
+}

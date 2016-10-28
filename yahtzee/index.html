@@ -9,6 +9,9 @@
 
     </head>
     <body>
+       
+       <h1>Yahtzee</h1>
+       
         <div class="playarea">
         <div class="dice">   
             <span class="dice-value" id="valA"></span>
@@ -121,6 +124,85 @@
                     
         </table>
         </div> 
+
+        <h1>Yahtzee Regels</h1>
+        
+        <div id="rules">
+          <div class="helpbox">
+            <h2>Doel van het spel</h2>
+                <p>
+                  In Yahtzee is het de bedoeling dat je een zo hoog mogelijke score haalt
+                  door te gooien met 5 teerlingen. Het spel bestaat uit 13 ronden, waar
+                  je elke ronde 3 maal met de teerling mag werpen. Dit hoeft niet steeds
+                  met alle teerlingen. Elke ronde moet er een verschillende categorie
+                  uit het scorebord gekozen worden. De score wordt bepaald door een
+                  verschillend soort regel voor elke categorie. Het spel eindigt wanneer
+                  alle 13 categorieën ingevuld zijn.
+                </p>
+          </div>
+          <div class="helpbox">
+            <h2>Starten</h2>
+                <p>
+                  Om het spel te starten gooi je met alle teerlingen. Na deze worp kan je
+                  kiezen of je deze worp behoudt, alle teerlingen opnieuw gooit, of enkele
+                  teerlingen opnieuw te gooien door de andere teeringen vast te zetten.
+                  Elke ronde mag er 3 maal geworpen worden met de teerlingen.
+                </p>
+          </div>
+          <div class="helpbox">
+            <h2>Scores</h2>
+            <p>
+              Om je score op te slaan klik je op de knop in de categorie waar je
+              de score in wil opslaan. Er zijn twee delen in het scorebord - de
+              bovenkant en de onderkant.<br />
+              Wanneer een score is ingevuld kan deze niet meer veraderen.
+              Elke categorie kan slechts één maal voorkomen in het scorebord.
+            </p>
+            <h3>Bovenkant</h3>
+            <p>
+              De score in de bovenkant van het scorebord, is het aantal teerlingen
+              van dat getal, maal het getal zelf. (vb.: "5 - 6 - 5 - 5 - 3" scoort 15
+              in de "5"-categorie,  want 3x5=15)<br />
+              Als de som van elke categorie uit de bovenkant groter is dan 63,
+              krijg je een bonus van 35 punten.
+            </p>
+            <h3>Onderkant</h3>
+            <p>
+               De scores in de onderkant zijn steeds gelijk aan een vaste waarde of
+                nul, behalve voor "Chance".
+                </p>
+              <h4>"3 Of A Kind" en "4 Of A Kind"</h4>
+              <p>
+                Om te scoren in deze twee categorieën moet je respectievelijk 3 en 4
+                teerlingen hebben met dezelfde waarden. De totaalscore is het aantal
+                ogen dat elke teerling heeft geworpen.
+              </p>
+              <h4>"Kleine Straat" en "Grote Straat"</h4>
+              <p>
+                In deze categorieën krijg je respectievelijk 30 punten als je 4
+                opeenvolgende waarden hebt, en 40 punten bij 5 opeenvolgende
+                waarden.
+              </p>
+              <h4>"Full House"</h4>
+              <p>
+                Als je een "3 Of A Kind" hebt, en daarbij nog een ander paar, is dit
+                een "Full House" (vb.: 4 - 3 - 3 - 4 - 4). Voor deze worp krijg je 25
+                punten.
+              </p>
+              <h4>"Yahtzee"</h4>
+              <p>
+                Een "Yahtzee" bekom je als alle 5 de teerlingen de zelfde waarde
+                hebben. Met deze worp kan je 50 punten verdienen.
+              </p>
+              <h4>"Chance"</h4>
+              <p>
+                Als je geen mogelijkheid ziet tot een goede keuze uit de andere
+                categorieën kan je kiezen voor "Chance". De score die je krijgt
+                in deze categorie is het aantal ogen dat elke teerling geworpen heeft.
+              </p>
+          </div>
+        </div>
+
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src ="js/observablemodular.js"></script>
