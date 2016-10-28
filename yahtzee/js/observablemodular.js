@@ -86,6 +86,19 @@ $('.dice').each( function(){
 		newDice.diceElement.toggleClass('disabled');
 		newDice.diceIsUnlocked = !newDice.diceIsUnlocked;
 		//console.log( newDice.publish());
+        
+        var currentLock = newDice.lockContainer.attr('id').slice(-1);
+    var currentSpan = document.getElementById('val' + currentLock).innerHTML;
+    //document.getElementById('lock' + currentLock).disabled = true; werkt niet
+    
+        if (!newDice.diceIsUnlocked) {
+            numbers[ 'val' + currentLock ] = currentSpan;
+        } else {
+            delete numbers[ 'val' + currentLock ];
+        }
+        
+    numbers.sort();    
+    console.log(numbers);
 	})
 
 	// Add dice to model
@@ -93,6 +106,7 @@ $('.dice').each( function(){
 });
 
 var rolls = 0;
+var maxrolls = 3
 
 // Add event listener to button in dice
 $(".dice-functionality").on('click', function() {
@@ -115,7 +129,7 @@ $(".dice-functionality").on('click', function() {
 //-------------------------JORDY------------------------------------//
 
     
-    if (rolls >= 3)
+    if (rolls >= maxrolls)
     {
         document.getElementById("throwBtn").disabled = true;
     }
@@ -128,14 +142,7 @@ var numbers = [];
 
 $('.lockbutton').on('click', function()
 {
-    var currentLock = $(this).attr('id').slice(-1);
-    var currentSpan = document.getElementById('val' + currentLock).innerHTML;
-    document.getElementById('lock' + currentLock).disabled = true;
-    numbers.push(currentSpan);
-    numbers.sort();
-    console.log(numbers);
     
-    checkScores();
 })
 
 $('check').on('click', function()
@@ -151,41 +158,8 @@ function unlockTrow()
     //dice unlockken en values op 0 zetten
 }
 
-//SCORES
-function checkScores()
-{
-    var ones    = numbers.indexOf("1");
-    var twos    = numbers.indexOf("2");
-    var threes  = numbers.indexOf("3");
-    var fours   = numbers.indexOf("4");
-    var fives   = numbers.indexOf("5");
-    var sixes   = numbers.indexOf("6");
-    var threeOfKind = "";
-    var fourOfKind = "";
-    var fullHouse = "";
-    var smallStraight = ""; //1,2,3,4 or 2,3,4,5 or 3,4,5,6
-    var largeStraight = ""; // 1,2,3,4,5 or 2,3,4,5,6
-    var chance = ""; //Random stuff
-    var yahtzee =""; //Five of a kind
-}
-
-function checkForHowMany(array, what) 
-{
-    var count = 0;
-    for (var i = 0; i < numbers.length; i++) 
-    {
-        if (array[i] === what) 
-        {
-            count++;
-        }
-    }
-    return count;
-}
-
 //--------------------------------------------------------------//
 
-// Functionality used to make creation of die easier
-// @container jQuery object
 function createNewDice( container ) {
 
 	// Create new observable

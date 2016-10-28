@@ -67,7 +67,9 @@ h1
     /** bottom: 0; **/
     left: 0; right: 0;
     text-align: center;
-    padding:12px;
+    width: 45px;
+    margin: 0 auto;
+    margin-bottom: 10px;
 }
 
 .dice-functionality { left: 50px; top: 150px; }
