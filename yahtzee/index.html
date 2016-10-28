@@ -8,45 +8,45 @@
         <link rel="stylesheet" href="css/style.css">
 
     </head>
-    <body class="cfx">
-              
+    <body>
+        <div class="playarea">
+        <div class="dice">   
+            <span class="dice-value" id="val1"></span>
+            <div class="lockbutton" id="lock1">
+                <button>Lock</button>
+            </div>
+        </div>
+
+        <div class="dice">   
+            <span class="dice-value" id="val2"></span>
+            <div class="lockbutton" id="lock2">
+                <button>Lock</button>
+            </div>
+        </div>
+
+        <div class="dice">   
+            <span class="dice-value" id="val3"></span>
+            <div class="lockbutton" id="lock3">
+                <button>Lock</button>
+            </div>
+        </div>
+
+        <div class="dice">   
+            <span class="dice-value" id="val4"></span>
+            <div class="lockbutton" id="lock4">
+                <button>Lock</button>
+            </div>
+        </div>
+
+        <div class="dice">   
+            <span class="dice-value" id="val5"></span>
+            <div class="lockbutton" id="lock5">
+                <button>Lock</button>
+            </div>
+        </div>
+        
         <div class="dice-functionality">
-        <button>throw</button>
-        </div>
-               
-        <div class="dice">   
-            <span class="dice-value"></span>
-            <div class="lockbutton">
-                <button>lock</button>
-            </div>
-        </div>
-
-        <div class="dice">   
-            <span class="dice-value"></span>
-            <div class="lockbutton">
-                <button>lock</button>
-            </div>
-        </div>
-
-        <div class="dice">   
-            <span class="dice-value"></span>
-            <div class="lockbutton">
-                <button>lock</button>
-            </div>
-        </div>
-
-        <div class="dice">   
-            <span class="dice-value"></span>
-            <div class="lockbutton">
-                <button>lock</button>
-            </div>
-        </div>
-
-        <div class="dice">   
-            <span class="dice-value"></span>
-            <div class="lockbutton">
-                <button>lock</button>
-            </div>
+        <button id="throwBtn">THROW</button>
         </div>
         
         <table class="scoreboard">
@@ -55,27 +55,27 @@
                 <th>Points</th>
             </tr>
             <tr>
-                <td><button disabled>Aces</button></td>
+                <td><button class="check" disabled>Ones</button></td>
                 <td></td>
             </tr>            
             <tr>
-                <td><button disabled>Twos</button></td>
+                <td><button class="check" disabled>Twos</button></td>
                 <td></td>
             </tr>            
             <tr>
-                <td><button disabled>Threes</button></td>
+                <td><button class="check" disabled>Threes</button></td>
                 <td></td>
             </tr>            
             <tr>
-                <td><button disabled>Fours</button></td>
+                <td><button class="check" disabled>Fours</button></td>
                 <td></td>
             </tr>            
             <tr>
-                <td><button disabled>Fives</button></td>
+                <td><button class="check" disabled>Fives</button></td>
                 <td></td>
             </tr>
             <tr>
-                <td><button disabled>Sixes</button></td>
+                <td><button class="check" disabled>Sixes</button></td>
                 <td></td>
             </tr>           
             <tr>
@@ -87,31 +87,31 @@
                 <td><span class="bonus"></span></td>
             </tr>           
             <tr>
-                <td><button disabled>Three of a kind</button></td>
+                <td><button class="check" disabled>Three of a kind</button></td>
                 <td></td>
             </tr>
             <tr>
-                <td><button disabled>Four of a kind</button></td>
+                <td><button class="check" disabled>Four of a kind</button></td>
                 <td></td>
             </tr>
             <tr>
-                <td><button disabled>Full house</button></td>
+                <td><button class="check" disabled>Full house</button></td>
                 <td></td>
             </tr>
             <tr>
-                <td><button disabled>Small straight</button></td>
+                <td><button class="check" disabled>Small straight</button></td>
                 <td></td>
             </tr>
             <tr>
-                <td><button disabled>Large straight</button></td>
+                <td><button class="check" disabled>Large straight</button></td>
                 <td></td>
             </tr>
             <tr>
-                <td><button disabled>Chance</button></td>
+                <td><button class="check" disabled>Chance</button></td>
                 <td></td>
             </tr> 
             <tr>
-                <td><button disabled>YATHZE</button></td>
+                <td><button class="check" disabled>YATHZE</button></td>
                 <td></td>
             </tr> 
             <tr>
@@ -120,6 +120,7 @@
             </tr>       
                     
         </table>
+        </div> 
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src ="js/observablemodular.js"></script>
