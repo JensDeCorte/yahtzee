@@ -52,6 +52,7 @@ var yahtzeeModel = {
 }
 
 var rolls = 0;
+var turn = 1;
 var maxrolls = 3;
 var numbers = [];
 var eersteKeerGerold = false;
@@ -65,7 +66,7 @@ $(".dice-functionality").on('click', function()
     
 	for(var i=0; i<yahtzeeModel.dices.length; i++)
 	{
-		if(yahtzeeModel.dices[i].diceIsUnlocked)
+		if(yahtzeeModel.dices[i].diceIsUnlocked == true)
 		{
 			var randomNumber = Math.floor( Math.random() * 6  ) + 1
 			yahtzeeModel.dices[i].publish(randomNumber);
@@ -109,7 +110,7 @@ $('.dice').each( function(){
                 if (!newDice.diceIsUnlocked) 
                 {
                     numbers.push(currentSpan);
-                } 
+                }
                 else 
                 {
                     index = numbers.indexOf(currentSpan);
@@ -117,7 +118,7 @@ $('.dice').each( function(){
                         numbers.splice(index, 1);
                     }
                 }
-                //console.log(numbers);
+                console.log(numbers);
                 compareScore(currentSpan);
             }
         })
@@ -125,17 +126,19 @@ $('.dice').each( function(){
 
 function compareScore(currentS)
 {
-    for (var i = 1; i <= 6; i++)
+    for (var i = 0; i < 6; i++)
     {
         var currentMin = currentS - 1;
-        if (numbers.indexOf(currentS) > -1)
+        if (numbers.indexOf(currentS) > -1 && printTable[currentMin].innerHTML == "")
         {
-            buttonCheck[currentMin].disabled = false;
+            buttonCheck[currentMin].className += " recomended";
         }
         else
         {
-            buttonCheck[currentMin].disabled = true;
+            buttonCheck[currentMin].className = "check";
         }
+        
+        console.log("CURRENT: " + numbers.indexOf(currentS));
     }
 }
 
@@ -144,41 +147,42 @@ $(".check").click(function()
     var point = this.id;
     var matchingTable = point - 1;
     var score = 0;
+    var print = false;
     
     for (var i= 0; i < numbers.length; i++)
-    {
+    {        
         if (numbers[i] == point)
         {
             score += parseInt(point);
         }
-        printTable[matchingTable].innerHTML = score;
     }
     
-    console.log(numbers);
-    clearRound();
+        printTable[matchingTable].innerHTML = score;
+        clearRound();
 });
 
 function clearRound()
 {
-    numbers = ["","","","",""];
+    //Remove classes
+    $(".dice").removeClass("disabled");
+    //Empty HTML
+    $(".dice-value").empty();
+    //Empty numbers Array
+    numbers = [];   
+    
+    //Enable Throw Button
+    document.getElementById("throwBtn").disabled = false;
+    //Reset rolls
     rolls = 0;
-    
-    var resetDices = document.getElementsByClassName("dice-value");
-    var resetDisables = document.getElementsByClassName("dice");
-    
-    for (var i = 0; i < resetDices.length; i++)
-    {
-        resetDisables[i].removeClass('disabled');
-        resetDices[i].innerHTML = numbers[i];
-    }
-    
-    console.log(numbers);
+    //Reset eersteKeerGerol voor lock te locken in eerste beurt
     eersteKeerGerold = false;
+    //Volgende beurt tellen
+    turn++;
+    $(".turn").innerHTML = turn;
 }
 
 function createNewDice( container ) 
 {
-
 	var dice = new Observable();
 
 	dice.diceIsUnlocked = true;

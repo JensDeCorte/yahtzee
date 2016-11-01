@@ -40,6 +40,16 @@ h1
     
 }
 
+.ronde
+{
+    border: #000000 solid 2px;
+    width: 100px;
+    height: 50px;
+    margin-left: 30px;
+    padding: 5px;
+    background-color: #EEE;
+}
+
 #throwBtn, .dice
 {
     border: #000000 solid 2px;
@@ -152,4 +162,9 @@ h1 {
   margin-top: 1vw;
   margin-bottom: 0;
   text-decoration: underline;
+}
+
+.recomended
+{
+    background-color: #72b7d6;
 }
