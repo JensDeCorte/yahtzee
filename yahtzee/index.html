@@ -13,11 +13,7 @@
        <h1>Yahtzee</h1>
              
         <div class="playarea">
-              
-        <div class="ronde">
-        <p>Ronde: <span id="turn">0</span></p>
-        </div>
-        
+                
         <div class="dice">   
             <span class="dice-value" id="valA"></span>
             <div class="lockbutton" id="lockA">
@@ -55,6 +51,8 @@
         
         <div class="dice-functionality">
         <button id="throwBtn">THROW</button>
+        <p class="beurt">Beurt: <span id="beurt">0</span></p>
+        <p class="ronde">Ronde: <span id="turn">0</span></p>
         </div>
         
         <table class="scoreboard">
@@ -96,35 +94,35 @@
             </tr>           
             <tr>
                 <td><button class="check" id="three">Three of a kind</button></td>
-                <td></td>
+                <td class="print"></td>
             </tr>
             <tr>
                 <td><button class="check" id="four">Four of a kind</button></td>
-                <td></td>
+                <td class="print"></td>
             </tr>
             <tr>
                 <td><button class="check" id="full">Full house</button></td>
-                <td></td>
+                <td class="print"></td>
             </tr>
             <tr>
                 <td><button class="check" id="small">Small straight</button></td>
-                <td></td>
+                <td class="print"></td>
             </tr>
             <tr>
                 <td><button class="check" id="large">Large straight</button></td>
-                <td></td>
+                <td class="print"></td>
             </tr>
             <tr>
                 <td><button class="check" id="chance">Chance</button></td>
-                <td></td>
+                <td class="print"></td>
             </tr> 
             <tr>
                 <td><button class="check" id="yathzee">YATHZEE</button></td>
-                <td></td>
+                <td class="print"></td>
             </tr> 
             <tr>
                 <td><p>Total Score</p></td>
-                <td><span class="total"></span></td>
+                <td><span id="allValues"></span></td>
             </tr>       
                     
         </table>
@@ -207,6 +205,10 @@
               </p>
           </div>
         </div>
+        
+        <footer>
+        <p>Gemaakt door: Jordy Detemmerman, Jens De Corte &amp; Joren Dandois</p>
+        </footer>
 
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

@@ -52,6 +52,7 @@ var yahtzeeModel = {
 }
 
 var rolls = 0;
+var scoreTotal = 0;
 var turn = 1;
 var maxrolls = 3;
 var numbers = [];
@@ -64,8 +65,8 @@ $(".dice-functionality").on('click', function()
 {
     eersteKeerGerold = true;
     rolls++;
-    console.log(turn);
     document.getElementById("turn").innerHTML = turn;
+    document.getElementById("beurt").innerHTML = rolls;
     
     if(turn <= 13)
     {
@@ -82,8 +83,10 @@ $(".dice-functionality").on('click', function()
         {
             document.getElementById("throwBtn").disabled = true;
         }
-
-        console.log("Dit was beurt: " + rolls);
+    }
+    else
+    {
+        alert("Het spel is gedaan.")
     }
 		
 });
@@ -146,8 +149,6 @@ function compareScore(currentS)
         {
             buttonCheck[currentMin].className = "check";
         }
-        
-        console.log("CURRENT: " + numbers.indexOf(currentS));
     }
 }
 
@@ -167,7 +168,10 @@ $(".check").click(function()
                 buttonCheck[matchingTable].className = "check";
             }
         }
+        
+        scoreTotal += score;
         printTable[matchingTable].innerHTML = score;
+        document.getElementById("allValues").innerHTML = scoreTotal;
         turn++;
         clearRound();
     }
@@ -191,6 +195,8 @@ function clearRound()
     {
         yahtzeeModel.dices[i].diceIsUnlocked = true;
     }
+    document.getElementById("turn").innerHTML = turn;
+    document.getElementById("beurt").innerHTML = rolls;
 }
 
 function createNewDice( container ) 

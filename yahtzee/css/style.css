@@ -21,7 +21,7 @@ h1
     width: 900px;
 }
 
-.dice-functionality
+.dice-functionality, .ronde, .beurt
 {
     width: 50px;
     height: 20px;
@@ -40,14 +40,17 @@ h1
     
 }
 
-.ronde
+.ronde, .beurt
 {
+    
     border: #000000 solid 2px;
-    width: 90px;
-    height: 50px;
-    margin-left: 15px;
+    width: 86px;
+    height: 30px;
     padding: 5px;
     background-color: #EEE;
+    margin: 15px 0 0 0;
+    line-height: 30px;
+    text-align: center;
 }
 
 #throwBtn, .dice
@@ -89,7 +92,7 @@ h1
 
 .disabled
 {
-    background-color: #f87d3b;
+    background-color: #f83b3b;
 }
 
 table {
@@ -167,4 +170,9 @@ h1 {
 .recomended
 {
     background-color: #72b7d6;
+}
+
+footer
+{
+    padding: 10px;
 }
