@@ -130,6 +130,7 @@ $('.dice').each( function(){
                         numbers.splice(index, 1);
                     }
                 }
+                numbers.sort();
                 console.log(numbers);
                 compareScore(currentSpan);
             }
@@ -155,27 +156,46 @@ function compareScore(currentS)
 $(".check").click(function()
 {
     var point = this.id;
+    console.log(point);
     var matchingTable = point - 1;
     var score = 0;
-    var print = false;
-    if (eersteKeerGerold == true && printTable[matchingTable].innerHTML == "")
+    
+    //BOVENKANT
+    if (eersteKeerGerold == true)
     {
         for (var i= 0; i < numbers.length; i++)
-        {        
+        {   
             if (numbers[i] == point)
             {
                 score += parseInt(point);
-                buttonCheck[matchingTable].className = "check";
             }
         }
         
-        scoreTotal += score;
         printTable[matchingTable].innerHTML = score;
-        document.getElementById("allValues").innerHTML = scoreTotal;
-        turn++;
-        clearRound();
+        this.disabled = true; 
     }
+    else if (eersteKeerGerold == true)
+    {
+        for (var a = 6; a < 13; a++)
+        {
+            score + 30;
+        }
+        
+        printTable[a].innerHTML = score;
+        this.disabled = true;
+    }
+    
+    scoreTotal += score;
+    document.getElementById("allValues").innerHTML = scoreTotal;
+    turn++;
+    clearRound();
+    
 });
+
+function checkBonus()
+{    
+    //Bereken bonus als de bovenkant hoger is dan 63
+}
 
 function clearRound()
 {
