@@ -55,11 +55,8 @@ var rolls = 0;
 var maxrolls = 3;
 var numbers = [];
 var eersteKeerGerold = false;
-
-function evaluateScore( score ) 
-{
-    //Niks
-}
+var buttonCheck = document.getElementsByClassName("check");
+var printTable = document.getElementsByClassName("print");
 
 $(".dice-functionality").on('click', function() 
 {
@@ -90,7 +87,8 @@ $('.dice').each( function(){
 	var newDice = createNewDice( $( this ) );
     var compare = [];
     var value;
-
+    var index;
+    
 	newDice.diceElement = $( this );
 
 	newDice.lockContainer = $( this ).find('.lockbutton');
@@ -110,73 +108,84 @@ $('.dice').each( function(){
 
                 if (!newDice.diceIsUnlocked) 
                 {
-                    numbers[ 'val' + currentLock ] = currentSpan;
+                    numbers.push(currentSpan);
                 } 
                 else 
                 {
-                    delete numbers[ 'val' + currentLock ];
+                    index = numbers.indexOf(currentSpan);
+                    {
+                        numbers.splice(index, 1);
+                    }
                 }
-                
-                console.log(numbers);
-                
-                //BUG, deze houd values in de array vast, die moet net als de
-                //if statement hierboven aangepast worden dat value gedeletet wordt
-                //wanneer je weer op de lock drukt
-                for(var key in numbers) 
-                {
-                    value = numbers[key];
-                    
-                    compare.push(value); 
-                    compare.sort();  
-                }
-                
-                console.log("Compare: " + compare);
-                compareScore(compare);
+                //console.log(numbers);
+                compareScore(currentSpan);
             }
         })
 });
 
-function compareScore(playerInput)
+function compareScore(currentS)
 {
-    console.log("PlayerInput: " + playerInput);  
-    
-    if(playerInput.indexOf('2') > -1 )
+    for (var i = 1; i <= 6; i++)
     {
-        console.log("YES!");
+        var currentMin = currentS - 1;
+        if (numbers.indexOf(currentS) > -1)
+        {
+            buttonCheck[currentMin].disabled = false;
+        }
+        else
+        {
+            buttonCheck[currentMin].disabled = true;
+        }
     }
 }
 
-$('check').on('click', function()
+$(".check").click(function()
 {
-    //Print score op de bijhorende span
-    unlockTrow();
-})
+    var point = this.id;
+    var matchingTable = point - 1;
+    var score = 0;
+    
+    for (var i= 0; i < numbers.length; i++)
+    {
+        if (numbers[i] == point)
+        {
+            score += parseInt(point);
+        }
+        printTable[matchingTable].innerHTML = score;
+    }
+    
+    console.log(numbers);
+    clearRound();
+});
 
-function unlockTrow()
+function clearRound()
 {
+    numbers = ["","","","",""];
     rolls = 0;
-    document.getElementById("throwBtn").disabled = false;
-    //dice unlockken en values op 0 zetten
+    
+    var resetDices = document.getElementsByClassName("dice-value");
+    var resetDisables = document.getElementsByClassName("dice");
+    
+    for (var i = 0; i < resetDices.length; i++)
+    {
+        resetDisables[i].removeClass('disabled');
+        resetDices[i].innerHTML = numbers[i];
+    }
+    
+    console.log(numbers);
+    eersteKeerGerold = false;
 }
 
-function createNewDice( container ) {
+function createNewDice( container ) 
+{
 
-	// Create new observable
 	var dice = new Observable();
 
 	dice.diceIsUnlocked = true;
-
-	// Add subscription to observable
-	dice.subscribe(function( data ){
-		// Recalculate score when dice is cast
-        if (dice.diceIsUnlocked == true)
-        {
-            dice.subscribe( evaluateScore );
-        }
-		// Update dice HTML value
+	dice.subscribe(function( data )
+    {
 		container.find( '.dice-value' ).html( data )
 	});
-
-	// Return observable
+    
 	return dice;
 }
