@@ -11,12 +11,13 @@
     <body>
        
        <h1>Yahtzee</h1>
-       
-        <div class="ronde">
-        <p>Ronde: <span class="turn">1</span></p>
-        </div>
-       
+             
         <div class="playarea">
+              
+        <div class="ronde">
+        <p>Ronde: <span id="turn">0</span></p>
+        </div>
+        
         <div class="dice">   
             <span class="dice-value" id="valA"></span>
             <div class="lockbutton" id="lockA">
@@ -94,31 +95,31 @@
                 <td><span class="bonus"></span></td>
             </tr>           
             <tr>
-                <td><button class="check">Three of a kind</button></td>
+                <td><button class="check" id="three">Three of a kind</button></td>
                 <td></td>
             </tr>
             <tr>
-                <td><button class="check">Four of a kind</button></td>
+                <td><button class="check" id="four">Four of a kind</button></td>
                 <td></td>
             </tr>
             <tr>
-                <td><button class="check">Full house</button></td>
+                <td><button class="check" id="full">Full house</button></td>
                 <td></td>
             </tr>
             <tr>
-                <td><button class="check">Small straight</button></td>
+                <td><button class="check" id="small">Small straight</button></td>
                 <td></td>
             </tr>
             <tr>
-                <td><button class="check">Large straight</button></td>
+                <td><button class="check" id="large">Large straight</button></td>
                 <td></td>
             </tr>
             <tr>
-                <td><button class="check">Chance</button></td>
+                <td><button class="check" id="chance">Chance</button></td>
                 <td></td>
             </tr> 
             <tr>
-                <td><button class="check">YATHZE</button></td>
+                <td><button class="check" id="yathzee">YATHZEE</button></td>
                 <td></td>
             </tr> 
             <tr>
