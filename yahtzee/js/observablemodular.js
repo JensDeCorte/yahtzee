@@ -52,35 +52,42 @@ var yahtzeeModel = {
 }
 
 var rolls = 0;
+var scoreTotal = 0;
+var turn = 1;
 var maxrolls = 3;
 var numbers = [];
 var eersteKeerGerold = false;
+var buttonCheck = document.getElementsByClassName("check");
+var printTable = document.getElementsByClassName("print");
 
-function evaluateScore( score ) 
-{
-    //Niks
-}
 
 $(".dice-functionality").on('click', function() 
 {
     eersteKeerGerold = true;
     rolls++;
+    document.getElementById("turn").innerHTML = turn;
+    document.getElementById("beurt").innerHTML = rolls;
     
-	for(var i=0; i<yahtzeeModel.dices.length; i++)
-	{
-		if(yahtzeeModel.dices[i].diceIsUnlocked)
-		{
-			var randomNumber = Math.floor( Math.random() * 6  ) + 1
-			yahtzeeModel.dices[i].publish(randomNumber);
-		}
-	}
-    
-    if (rolls >= maxrolls)
+    if(turn <= 13)
     {
-        document.getElementById("throwBtn").disabled = true;
+        for(var i=0; i<yahtzeeModel.dices.length; i++)
+        {
+            if(yahtzeeModel.dices[i].diceIsUnlocked == true)
+            {
+                var randomNumber = Math.floor( Math.random() * 6  ) + 1
+                yahtzeeModel.dices[i].publish(randomNumber);
+            }
+        }
+
+        if (rolls >= maxrolls)
+        {
+            document.getElementById("throwBtn").disabled = true;
+        }
     }
-    
-    console.log("Dit was beurt: " + rolls);
+    else
+    {
+        alert("Het spel is gedaan.")
+    }
 		
 });
 
@@ -88,9 +95,11 @@ $('.dice').each( function(){
 
 	// Create new Dice observable
 	var newDice = createNewDice( $( this ) );
-
-	//var unlocked = true;
-
+    var compare = [];
+    var value;
+    var index;
+    
+    
 	newDice.diceElement = $( this );
 
 	newDice.lockContainer = $( this ).find('.lockbutton');
@@ -103,6 +112,8 @@ $('.dice').each( function(){
             if(eersteKeerGerold)
             {
                 newDice.diceElement.toggleClass('disabled');
+                //Op lock: true = false?
+                //op Unock: false = true?
                 newDice.diceIsUnlocked = !newDice.diceIsUnlocked;
 
                 var currentLock = newDice.lockContainer.attr('id').slice(-1);
@@ -110,49 +121,113 @@ $('.dice').each( function(){
 
                 if (!newDice.diceIsUnlocked) 
                 {
-                    numbers[ 'val' + currentLock ] = currentSpan;
-                } 
+                    numbers.push(currentSpan);
+                }
                 else 
                 {
-                    delete numbers[ 'val' + currentLock ];
+                    index = numbers.indexOf(currentSpan);
+                    {
+                        numbers.splice(index, 1);
+                    }
                 }
-                
-                //VIND DE VALUE EN VERGELIJK MET BIJVOORBEELD EEN SMALL STRAIGHT
+                numbers.sort();
+                console.log(numbers);
+                compareScore(currentSpan);
             }
         })
 });
 
-$('check').on('click', function()
+function compareScore(currentS)
 {
-    //Print score op de bijhorende span
-    unlockTrow();
-})
-
-function unlockTrow()
-{
-    rolls = 0;
-    document.getElementById("throwBtn").disabled = false;
-    //dice unlockken en values op 0 zetten
+    for (var i = 0; i < 6; i++)
+    {
+        var currentMin = currentS - 1;
+        if (numbers.indexOf(currentS) > -1 && printTable[currentMin].innerHTML == "")
+        {
+            buttonCheck[currentMin].className += " recomended";
+        }
+        else
+        {
+            buttonCheck[currentMin].className = "check";
+        }
+    }
 }
 
-function createNewDice( container ) {
+$(".check").click(function()
+{
+    var point = this.id;
+    console.log(point);
+    var matchingTable = point - 1;
+    var score = 0;
+    
+    //BOVENKANT
+    if (eersteKeerGerold == true)
+    {
+        for (var i= 0; i < numbers.length; i++)
+        {   
+            if (numbers[i] == point)
+            {
+                score += parseInt(point);
+            }
+        }
+        
+        printTable[matchingTable].innerHTML = score;
+        this.disabled = true; 
+    }
+    else if (eersteKeerGerold == true)
+    {
+        for (var a = 6; a < 13; a++)
+        {
+            score + 30;
+        }
+        
+        printTable[a].innerHTML = score;
+        this.disabled = true;
+    }
+    
+    scoreTotal += score;
+    document.getElementById("allValues").innerHTML = scoreTotal;
+    turn++;
+    clearRound();
+    
+});
 
-	// Create new observable
+function checkBonus()
+{    
+    //Bereken bonus als de bovenkant hoger is dan 63
+}
+
+function clearRound()
+{
+    //Remove classes
+    $(".dice").removeClass("disabled");
+    $(".check").removeClass("recomended");
+    //Empty HTML, Array
+    $(".dice-value").empty();
+    numbers = [];   
+    //Enable Throw Button
+    document.getElementById("throwBtn").disabled = false;
+    //Reset rolls, eerstekeergerold
+    rolls = 0;
+    eersteKeerGerold = false;
+    //Reset de locks
+    for(var i=0; i<yahtzeeModel.dices.length; i++)
+    {
+        yahtzeeModel.dices[i].diceIsUnlocked = true;
+    }
+    document.getElementById("turn").innerHTML = turn;
+    document.getElementById("beurt").innerHTML = rolls;
+}
+
+function createNewDice( container ) 
+{
 	var dice = new Observable();
 
 	dice.diceIsUnlocked = true;
-
-	// Add subscription to observable
-	dice.subscribe(function( data ){
-		// Recalculate score when dice is cast
-        if (dice.diceIsUnlocked == true)
-        {
-            dice.subscribe( evaluateScore );
-        }
-		// Update dice HTML value
-		container.find( '.dice-value' ).html( data )
+	dice.subscribe(function(data)
+    {
+		container.find('.dice-value').html( data )
 	});
-
-	// Return observable
+    
 	return dice;
 }
