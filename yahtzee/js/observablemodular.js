@@ -52,34 +52,42 @@ var yahtzeeModel = {
 }
 
 var rolls = 0;
+var scoreTotal = 0;
+var turn = 1;
 var maxrolls = 3;
 var numbers = [];
 var eersteKeerGerold = false;
+var buttonCheck = document.getElementsByClassName("check");
+var printTable = document.getElementsByClassName("print");
 
-function evaluateScore( score ) 
-{
-    console.log(score);
-}
 
 $(".dice-functionality").on('click', function() 
 {
     eersteKeerGerold = true;
     rolls++;
-	for(var i=0; i<yahtzeeModel.dices.length; i++)
-	{
-		if(yahtzeeModel.dices[i].diceIsUnlocked)
-		{
-			var randomNumber = Math.floor( Math.random() * 6  ) + 1
-			yahtzeeModel.dices[i].publish(randomNumber);   
-		}
-	}
+    document.getElementById("turn").innerHTML = turn;
+    document.getElementById("beurt").innerHTML = rolls;
     
-    if (rolls >= maxrolls)
+    if(turn <= 13)
     {
-        document.getElementById("throwBtn").disabled = true;
+        for(var i=0; i<yahtzeeModel.dices.length; i++)
+        {
+            if(yahtzeeModel.dices[i].diceIsUnlocked == true)
+            {
+                var randomNumber = Math.floor( Math.random() * 6  ) + 1
+                yahtzeeModel.dices[i].publish(randomNumber);
+            }
+        }
+
+        if (rolls >= maxrolls)
+        {
+            document.getElementById("throwBtn").disabled = true;
+        }
     }
-    
-    console.log("Dit was beurt: " + rolls);
+    else
+    {
+        alert("Het spel is gedaan.")
+    }
 		
 });
 
@@ -87,9 +95,11 @@ $('.dice').each( function(){
 
 	// Create new Dice observable
 	var newDice = createNewDice( $( this ) );
-
-	//var unlocked = true;
-
+    var compare = [];
+    var value;
+    var index;
+    
+    
 	newDice.diceElement = $( this );
 
 	newDice.lockContainer = $( this ).find('.lockbutton');
@@ -102,62 +112,125 @@ $('.dice').each( function(){
             if(eersteKeerGerold)
             {
                 newDice.diceElement.toggleClass('disabled');
+                //Op lock: true = false?
+                //op Unock: false = true?
                 newDice.diceIsUnlocked = !newDice.diceIsUnlocked;
 
                 var currentLock = newDice.lockContainer.attr('id').slice(-1);
-                var currentSpan = document.getElementById('val' + currentLock).innerHTML;
+                var currentSpan = document.getElementById('val' + currentLock).innerHTML.slice(31,32);   //de slice is om het nummer van de dobbelsteen uit de image-source te halen
 
                 if (!newDice.diceIsUnlocked) 
                 {
-                    numbers[ 'val' + currentLock ] = currentSpan;
-                } 
+                    numbers.push(currentSpan);
+                }
                 else 
                 {
-                    delete numbers[ 'val' + currentLock ];
+                    index = numbers.indexOf(currentSpan);
+                    {
+                        numbers.splice(index, 1);
+                    }
                 }
-
-                //numbers.sort();    
+                numbers.sort();
                 console.log(numbers);
-                checkScore();
+                compareScore(currentSpan);
             }
         })
 });
 
-function checkScore()
+
+
+function compareScore(currentS)
 {
-    console.log(numbers[0]);
+    for (var i = 0; i < 6; i++)
+    {
+        var currentMin = currentS - 1;
+        if (numbers.indexOf(currentS) > -1 && printTable[currentMin].innerHTML == "")
+        {
+            buttonCheck[currentMin].className += " recomended";
+        }
+        else
+        {
+            buttonCheck[currentMin].className = "check";
+        }
+    }
 }
 
-$('check').on('click', function()
+$(".check").click(function()
 {
-    //Print score op de bijhorende span
-    unlockTrow();
-})
+    var point = this.id;
+    console.log(point);
+    var matchingTable = point - 1;
+    var score = 0;
+    
+    //BOVENKANT
+    if (eersteKeerGerold == true)
+    {
+        for (var i= 0; i < numbers.length; i++)
+        {   
+            if (numbers[i] == point)
+            {
+                score += parseInt(point);
+            }
+        }
+        
+        printTable[matchingTable].innerHTML = score;
+        this.disabled = true; 
+    }
+    else if (eersteKeerGerold == true)
+    {
+        for (var a = 6; a < 13; a++)
+        {
+            score + 30;
+        }
+        
+        printTable[a].innerHTML = score;
+        this.disabled = true;
+    }
+    
+    scoreTotal += score;
+    document.getElementById("allValues").innerHTML = scoreTotal;
+    turn++;
+    clearRound();
+    
+});
 
-function unlockTrow()
+function checkBonus()
+{    
+    //Bereken bonus als de bovenkant hoger is dan 63
+}
+
+function clearRound()
 {
-    rolls = 0;
+    //Remove classes
+    $(".dice").removeClass("disabled");
+    $(".check").removeClass("recomended");
+    //Empty HTML, Array
+    $(".dice-value").empty();
+    numbers = [];   
+    //Enable Throw Button
     document.getElementById("throwBtn").disabled = false;
-    //dice unlockken en values op 0 zetten
+    //Reset rolls, eerstekeergerold
+    rolls = 0;
+    eersteKeerGerold = false;
+    //Reset de locks
+    for(var i=0; i<yahtzeeModel.dices.length; i++)
+    {
+        yahtzeeModel.dices[i].diceIsUnlocked = true;
+    }
+    document.getElementById("turn").innerHTML = turn;
+    document.getElementById("beurt").innerHTML = rolls;
 }
 
-function createNewDice( container ) {
-
-	// Create new observable
+function createNewDice( container ) 
+{
 	var dice = new Observable();
 
 	dice.diceIsUnlocked = true;
+	dice.subscribe(function(data)
+    {
+    	//container.find( '.dice-value' ).html( data )    DIT WAS OM DE GETALLEN TE LATEN ZIEN -- als je dit wil moet het deel hieronder weg
 
-	// Add subscription to observable
-	dice.subscribe(function( data ){
-		// Recalculate score when dice is cast
-        if (dice.diceIsUnlocked == true)
-        {
-            dice.subscribe( evaluateScore );
-        }
-		// Update dice HTML value
-		//container.find( '.dice-value' ).html( data )	 //DIT MAG EVENTUEEL VERWIJDERD WORDEN.. DIT GEEFT DE GETALLEN WEER IPV DE IMAGES
-
+    	//dit deel hieronder is om de getallen om te zetten naar dobbelsteen-images
 		var imagesource = "";
 
 		switch (data)
@@ -185,9 +258,8 @@ function createNewDice( container ) {
 		}
 
 		container.find( '.dice-value' ).html( "<img src='" + imagesource + "'>" )
-
+							//tot hier is om de images te tonen
 	});
-
-	// Return observable
+    
 	return dice;
 }

@@ -21,7 +21,7 @@ h1
     width: 900px;
 }
 
-.dice-functionality
+.dice-functionality, .ronde, .beurt
 {
     width: 50px;
     height: 20px;
@@ -38,6 +38,19 @@ h1
     color: white;
     font-weight: bold;
     
+}
+
+.ronde, .beurt
+{
+    
+    border: #000000 solid 2px;
+    width: 86px;
+    height: 30px;
+    padding: 5px;
+    background-color: #EEE;
+    margin: 15px 0 0 0;
+    line-height: 30px;
+    text-align: center;
 }
 
 #throwBtn, .dice
@@ -69,7 +82,6 @@ h1
     margin-top: 20px;
 }
 
-
 .lockbutton {
     position: absolute;
     /** bottom: 0; **/
@@ -87,7 +99,7 @@ h1
 
 .disabled
 {
-    background-color: #f87d3b;
+    background-color: #f83b3b;
 }
 
 table {
@@ -111,4 +123,63 @@ table, th, td {
 table button
 {
     width: 100px;
+}
+
+h1 {
+  margin: 5vh auto;
+  font-size: 4vw;
+}
+
+#rules {
+  margin: 5vh auto;
+  width: 70vw;
+  padding: 3vh 3vw;
+  background-color: #ccc;
+  border: 0.1vw solid gray;
+  border-radius: 1vw;
+}
+
+.helpbox {
+  border-left: 0.5vw solid gray;
+  padding-left: 1vw;
+}
+
+.helpbox h2 {
+  font-size: 3vw;
+  margin: 0;
+}
+
+.helpbox h3 {
+  font-size: 2.5vw;
+  margin: 0;
+}
+
+.helpbox h3::before {
+  content: ">";
+  margin-right: 0.5vw;
+}
+
+.helpbox p, .helpbox h4 {
+  font-size: 1.25vw;
+}
+
+.helpbox h3 + p, .helpbox h4, .helpbox h4 + p  {
+  margin-left: 2vw;
+}
+
+.helpbox h4 {
+  font-weight: bold;
+  margin-top: 1vw;
+  margin-bottom: 0;
+  text-decoration: underline;
+}
+
+.recomended
+{
+    background-color: #72b7d6;
+}
+
+footer
+{
+    padding: 10px;
 }
