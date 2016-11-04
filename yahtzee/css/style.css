@@ -92,7 +92,18 @@ h1
     margin-bottom: 10px;
 }
 
-.dice-functionality { left: 50px; top: 150px; }
+.dice-functionality
+{
+    left: 50px;
+    top: 150px; 
+}
+
+.feedback
+{
+    position: absolute;
+    margin-top: 230px;
+    margin-left: 15px;
+}
 
 .lockbutton { bottom: 0; }
 
