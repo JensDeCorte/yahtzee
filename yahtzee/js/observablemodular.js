@@ -53,16 +53,24 @@ var yahtzeeModel = {
 
 var rolls = 0;
 var scoreTotal = 0;
-var turn = 1;
+var bonusScore = 0;
+var turn = 0;
 var maxrolls = 3;
 var numbers = [];
 var eersteKeerGerold = false;
+var bonusAdded = false;
 var buttonCheck = document.getElementsByClassName("check");
 var printTable = document.getElementsByClassName("print");
-
+var diceSound = new Audio("sounds/dice.mp3");
 
 $(".dice-functionality").on('click', function() 
 {
+    if (eersteKeerGerold == false)
+    {
+        //enkel op eerste worp turn + 1
+        turn++;
+    }
+    
     eersteKeerGerold = true;
     rolls++;
     document.getElementById("turn").innerHTML = turn;
@@ -70,6 +78,8 @@ $(".dice-functionality").on('click', function()
     
     if(turn <= 13)
     {
+        diceSound.play();
+        
         for(var i=0; i<yahtzeeModel.dices.length; i++)
         {
             if(yahtzeeModel.dices[i].diceIsUnlocked == true)
@@ -86,7 +96,10 @@ $(".dice-functionality").on('click', function()
     }
     else
     {
-        alert("Het spel is gedaan.")
+        alert("Het spel is gedaan. Je score was " + scoreTotal);
+        turn = 13;
+        document.getElementById("turn").innerHTML = turn;
+        clearRound();
     }
 		
 });
@@ -115,9 +128,9 @@ $('.dice').each( function(){
                 //Op lock: true = false?
                 //op Unock: false = true?
                 newDice.diceIsUnlocked = !newDice.diceIsUnlocked;
-
                 var currentLock = newDice.lockContainer.attr('id').slice(-1);
-                var currentSpan = document.getElementById('val' + currentLock).innerHTML;
+                //de slice is om het nummer van de dobbelsteen uit de image-source te halen
+                var currentSpan = document.getElementById('val' + currentLock).innerHTML.slice(31,32);
 
                 if (!newDice.diceIsUnlocked) 
                 {
@@ -132,73 +145,186 @@ $('.dice').each( function(){
                 }
                 numbers.sort();
                 console.log(numbers);
-                compareScore(currentSpan);
             }
         })
 });
 
-function compareScore(currentS)
-{
-    for (var i = 0; i < 6; i++)
-    {
-        var currentMin = currentS - 1;
-        if (numbers.indexOf(currentS) > -1 && printTable[currentMin].innerHTML == "")
-        {
-            buttonCheck[currentMin].className += " recomended";
-        }
-        else
-        {
-            buttonCheck[currentMin].className = "check";
-        }
-    }
-}
+
 
 $(".check").click(function()
 {
     var point = this.id;
-    console.log(point);
     var matchingTable = point - 1;
     var score = 0;
+    var groeiWaarde = 0;
+    var groeiWaarde1 = 0;
+    var groeiWaarde2 = 0;
+    var origin = []
+    var amount = [];
+    var prev;
     
-    //BOVENKANT
+    var singleNumbers = [];
+	var vorigNummer = 0;
+	var indexNummer = 0;
+    
+    var houseDouble = false;
+    var houseTriple = false;
+    
+    var smallStraight = true;
+    var largeStraight = true;
+    
+    //Als op throw is geklikt, zoek en print score
     if (eersteKeerGerold == true)
     {
+        
+        //Alle niet gelocked dices in numbers steken
+        for(var i = 0; i<yahtzeeModel.dices.length; i++)
+        {
+            if (yahtzeeModel.dices[i].diceIsUnlocked == true) 
+            {
+                var currentLock = yahtzeeModel.dices[i].lockContainer.attr('id').slice(-1);
+                var currentSpan = document.getElementById('val' + currentLock).innerHTML.slice(31,32);
+                numbers.push(currentSpan);
+            }
+        }
+        //verwijder alle dubbele nummers voor controle small straight
+		for (var i = 0; i < numbers.length; i++) 
+        {
+            if (numbers[i] != vorigNummer)
+            {
+                vorigNummer = numbers[i];
+                singleNumbers[indexNummer] = numbers[i];
+                indexNummer++;
+            }
+		}
+        
+        //Tel hoeveel een number voorkomt en stop hoeveelheid in amount
+        for (var x = 0; x < numbers.length; x++)
+        {
+            if (numbers[x] !== prev) 
+            {
+                origin.push(numbers[x]);
+                amount.push(1);
+            } else 
+            {
+                amount[amount.length-1]++;
+            }
+            prev = numbers[x];
+            }
+            //Check voor een full house combo
+        for(var p=0; p < amount.length; p++)
+        {       
+            switch(amount[p])
+            {
+                case 2: houseDouble = true;
+                    break;
+                case 3: houseTriple = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+        //Check voor een small straight
+        groeiWaarde1 = singleNumbers[0];
+        groeiWaarde2 = singleNumbers[1];
+        for (var d=0; d < 4; d++)
+        {
+            if (singleNumbers[d] == groeiWaarde1)
+            {
+                groeiWaarde1 = parseInt(singleNumbers[d]) + 1;
+            }
+            else if (singleNumbers[d] == groeiWaarde2)
+            {
+                groeiWaarde2 = parseInt(singleNumbers[d]) + 1;
+            }
+            else
+            {
+                smallStraight = false;
+            }
+        }
+        //check voor een large straight
+        groeiWaarde = numbers[0];
+        for (var c=0; c < 5; c++)
+        {
+            if (numbers[c] == groeiWaarde)
+            {
+                groeiWaarde = parseInt(numbers[c]) + 1;
+            }
+            else
+            {
+                largeStraight = false;
+            }
+        }
+        
+        //Check voor bovenkant of mogelijke combo's
         for (var i= 0; i < numbers.length; i++)
-        {   
-            if (numbers[i] == point)
+        {            
+            //Numbers 1-6 of hoeveel voorkomen
+            if (numbers[i] == point) // Bovenkant
             {
                 score += parseInt(point);
+                bonusScore += parseInt(point);
+            }
+            else if(amount[i] >= 3 && point == 7) //Three of kind
+            {
+                for (var l=0; l<numbers.length; l++)
+                {
+                    score += parseInt(numbers[l]);
+                }
+            }
+            else if(amount[i] >= 4 && point == 8) //Four of kind
+            {
+                for (var l=0; l<numbers.length; l++)
+                {
+                    score += parseInt(numbers[l]);
+                }     
+            }
+            else if (houseDouble == true && houseTriple == true && point == 9) // Full house
+            {
+                score = 25;                
+            }
+            else if(smallStraight == true && point == 10) //Small Straight
+            {
+                score = 30;
+            }
+            else if(largeStraight == true && point == 11)// Large straight
+            {
+                score = 40;
+            }
+            else if(point == 12) // Chance
+            {
+                score += parseInt(numbers[i]);
+            }
+            else if(amount[i] == 5 && point == 13) //Yathzee
+            {
+                score = 50;
             }
         }
         
         printTable[matchingTable].innerHTML = score;
-        this.disabled = true; 
-    }
-    else if (eersteKeerGerold == true)
-    {
-        for (var a = 6; a < 13; a++)
-        {
-            score + 30;
-        }
-        
-        printTable[a].innerHTML = score;
         this.disabled = true;
+        scoreTotal += score;
+        document.getElementById("allValues").innerHTML = scoreTotal;
+        clearRound();
     }
-    
-    scoreTotal += score;
-    document.getElementById("allValues").innerHTML = scoreTotal;
-    turn++;
-    clearRound();
+    else
+    {
+        alert("Eerst rollen aub.");
+    }
     
 });
 
-function checkBonus()
-{    
-    //Bereken bonus als de bovenkant hoger is dan 63
-}
-
 function clearRound()
 {
+    //Check for bonus
+    if(bonusScore > 63 && bonusAdded == false)
+    {
+        scoreTotal += 35;
+        document.getElementById("bonus").innerHTML = 35;
+        document.getElementById("allValues").innerHTML = scoreTotal;
+        bonusAdded = true;
+        console.log(bonusScore);
+    }
     //Remove classes
     $(".dice").removeClass("disabled");
     $(".check").removeClass("recomended");
@@ -215,7 +341,6 @@ function clearRound()
     {
         yahtzeeModel.dices[i].diceIsUnlocked = true;
     }
-    document.getElementById("turn").innerHTML = turn;
     document.getElementById("beurt").innerHTML = rolls;
 }
 
@@ -226,7 +351,37 @@ function createNewDice( container )
 	dice.diceIsUnlocked = true;
 	dice.subscribe(function(data)
     {
-		container.find('.dice-value').html( data )
+    	//container.find( '.dice-value' ).html( data )    DIT WAS OM DE GETALLEN TE LATEN ZIEN -- als je dit wil moet het deel hieronder weg
+
+    	//dit deel hieronder is om de getallen om te zetten naar dobbelsteen-images
+		var imagesource = "";
+
+		switch (data)
+		{
+			case 1:
+				imagesource = "img_dobbelstenen/dice1.png";
+				break;
+			case 2:
+				imagesource = "img_dobbelstenen/dice2.png";
+				break;
+			case 3:
+				imagesource = "img_dobbelstenen/dice3.png";
+				break;
+			case 4:
+				imagesource = "img_dobbelstenen/dice4.png";
+				break;
+			case 5:
+				imagesource = "img_dobbelstenen/dice5.png";
+				break;
+			case 6:
+				imagesource = "img_dobbelstenen/dice6.png";
+				break;
+			default:
+				break;
+		}
+
+		container.find( '.dice-value' ).html( "<img src='" + imagesource + "'>" )
+							//tot hier is om de images te tonen
 	});
     
 	return dice;
