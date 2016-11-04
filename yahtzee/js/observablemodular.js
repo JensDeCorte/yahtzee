@@ -158,6 +158,10 @@ $(".check").click(function()
     var amount = [];
     var prev;
     
+    var singleNumbers = [];
+	var vorigNummer = 0;
+	var indexNummer = 0;
+    
     var houseDouble = false;
     var houseTriple = false;
     
@@ -167,6 +171,7 @@ $(".check").click(function()
     //Als op throw is geklikt, zoek en print score
     if (eersteKeerGerold == true)
     {
+        
         //Alle niet gelocked dices in numbers steken
         for(var i = 0; i<yahtzeeModel.dices.length; i++)
         {
@@ -177,6 +182,16 @@ $(".check").click(function()
                 numbers.push(currentSpan);
             }
         }
+        //verwijder alle dubbele nummers voor controle small straight
+		for (var i = 0; i < numbers.length; i++) 
+        {
+            if (numbers[i] != vorigNummer)
+            {
+                vorigNummer = numbers[i];
+                singleNumbers[indexNummer] = numbers[i];
+                indexNummer++;
+            }
+		}
         
         //Tel hoeveel een number voorkomt en stop hoeveelheid in amount
         for (var x = 0; x < numbers.length; x++)
