@@ -70,7 +70,7 @@ $(".dice-functionality").on('click', function()
         //enkel op eerste worp turn + 1
         turn++;
     }
-    diceSound.play();
+    
     eersteKeerGerold = true;
     rolls++;
     document.getElementById("turn").innerHTML = turn;
@@ -78,6 +78,8 @@ $(".dice-functionality").on('click', function()
     
     if(turn <= 13)
     {
+        diceSound.play();
+        
         for(var i=0; i<yahtzeeModel.dices.length; i++)
         {
             if(yahtzeeModel.dices[i].diceIsUnlocked == true)
@@ -95,6 +97,9 @@ $(".dice-functionality").on('click', function()
     else
     {
         alert("Het spel is gedaan. Je score was " + scoreTotal);
+        turn = 13;
+        document.getElementById("turn").innerHTML = turn;
+        clearRound();
     }
 		
 });

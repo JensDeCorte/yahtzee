@@ -21,8 +21,9 @@ h1
     width: 900px;
 }
 
-.dice-functionality, .ronde, .beurt
+.ronde, .beurt
 {
+    font-size: 14px;
     width: 50px;
     height: 20px;
     margin-left: 15px;
@@ -31,7 +32,9 @@ h1
 
 #throwBtn
 {
-    margin-top: 20px;
+    position: absolute;
+    left: 32px;
+    margin-top: 190px;
     height: 40px;
     width: 100px;
     background-color: #28869d;
@@ -90,12 +93,6 @@ h1
     width: 45px;
     margin: 0 auto;
     margin-bottom: 10px;
-}
-
-.dice-functionality
-{
-    left: 50px;
-    top: 150px; 
 }
 
 .feedback
