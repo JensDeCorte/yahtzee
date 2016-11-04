@@ -30,11 +30,18 @@ h1
     margin-top: 10px;
 }
 
+.dice-functionality
+{
+    height: 40px;
+    width: 100px;
+    position: absolute;
+    margin-left: 15px;
+    margin-top: 190px;
+}
+
 #throwBtn
 {
-    position: absolute;
-    left: 32px;
-    margin-top: 190px;
+    position: relative;
     height: 40px;
     width: 100px;
     background-color: #28869d;
