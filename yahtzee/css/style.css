@@ -6,7 +6,7 @@ html, body, table p
 
 body {
     font-family:sans-serif;
-    background-color: #8fbc8f;
+    background-color: #73b756;
 }
 
 .playarea
@@ -75,6 +75,13 @@ h1
     text-align:center;
 }
 
+.dice-value img             /* STYLE FOR DICE IMAGE */
+{
+    width: 75%;
+    height: 75%;
+    margin-top: 20px;
+}
+
 .lockbutton {
     position: absolute;
     /** bottom: 0; **/
@@ -85,7 +92,18 @@ h1
     margin-bottom: 10px;
 }
 
-.dice-functionality { left: 50px; top: 150px; }
+.dice-functionality
+{
+    left: 50px;
+    top: 150px; 
+}
+
+.feedback
+{
+    position: absolute;
+    margin-top: 230px;
+    margin-left: 15px;
+}
 
 .lockbutton { bottom: 0; }
 
@@ -102,7 +120,7 @@ table {
 
 th
 {
-    background-color: #000000;
+    background-color: #28869d;
     color: white;
 }
 
@@ -165,11 +183,6 @@ h1 {
   margin-top: 1vw;
   margin-bottom: 0;
   text-decoration: underline;
-}
-
-.recomended
-{
-    background-color: #72b7d6;
 }
 
 footer
